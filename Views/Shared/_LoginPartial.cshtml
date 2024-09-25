@@ -1,0 +1,62 @@
+﻿
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dropdown Menü ve İkon</title>
+   
+     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet"> 
+    <style>
+        a.navbar-toggler-icon {
+            color: #4b4c4d;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container">
+
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    @if (Context.User.Identity.IsAuthenticated)
+                    {
+
+                        <a class="nav-link dropdown-toggle text-dark" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fas fa-user"></i> Hello @Context.User.Identity.Name!
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="userDropdown">
+                            <form asp-controller="Account" asp-action="LogOut" method="post" id="logoutForm" class="dropdown-item">
+                                <button type="submit" class="btn btn-danger">Log off</button>
+                            </form>
+                        </div>
+
+                    }
+                    else
+                    {
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle text-dark" href="#" id="authDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-user"></i> Account
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="authDropdown">
+                                <a class="dropdown-item" asp-controller="Account" asp-action="Register">Register</a>
+                                <a class="dropdown-item" asp-controller="Account" asp-action="Login">Log in</a>
+                            </div>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+  
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script> 
+</body>
+</html>

@@ -1,0 +1,103 @@
+﻿@model List<WebAppBaslangc.Entities.UsersA>
+
+@{
+    ViewData["Title"] = "Admin Panel";
+}
+@{
+    Layout = "_AdminLayout";
+}
+
+<h1>Admin Panel</h1>
+<style>
+
+    .table {
+        width: 100%; 
+        table-layout: fixed; 
+    }
+
+        .table th, .table td {
+            text-align: center; 
+            overflow: hidden; 
+            white-space: nowrap; 
+            background: transparent;
+        }
+
+    .d-flex {
+        justify-content: center; 
+    }
+    .status-indicator {
+        display: inline-block;
+        width: 20px; 
+        height: 20px; 
+        border-radius: 50%; 
+        background-color: transparent; 
+    }
+
+    .status-indicator.deleted {
+        background-color: red;
+    }
+
+    .status-indicator.not-deleted {
+        background-color: transparent; 
+        border: 1px solid gray; 
+    }
+</style>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Username</th>
+            <th>Email</th>
+            <th>Role</th>
+            <th>Created Date</th>
+            <th>Updated Date</th>
+            <th>Deleted Date</th>
+            <th>Is Deleted</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model)
+        {
+            <tr>
+                <td>@user.userName</td>
+                <td>@user.eMail</td>
+                <td>@user.Role</td>
+                <td>@user.CreatedDate.ToString("yyyy-MM-dd")</td>  Oluşturulma tarihi 
+                <td>
+                    @if (user.UpdatedDate.HasValue)
+                    {
+                        @user.UpdatedDate.Value.ToString("yyyy-MM-dd")
+                    }
+                    else
+                    {
+                        <span>-</span>  Güncellenmemişse boş göster 
+                    }
+                </td>
+                <td>
+                    @if (user.DeletedDate.HasValue)
+                    {
+                        @user.DeletedDate.Value.ToString("yyyy-MM-dd")
+                    }
+                    else
+                    {
+                        <span>-</span>  Silinmemişse boş göster 
+                    }
+                </td>
+                <td>
+                     Soft delete durumunu görselleştirmek için stil uygulama 
+                    <span class="status-indicator @(user.IsDeleted ? "deleted" : "not-deleted")"></span>
+                </td>
+                <td>
+                     Edit button: Kullanıcıyı düzenlemek için yönlendirme 
+                    <a href="@Url.Action("EditUser", new { userName = user.userName })" class="btn btn-warning">Edit</a>
+
+                     Delete button: Kullanıcıyı silmek için yönlendirme 
+                    @if (!user.IsDeleted)
+                    {
+                        <a href="@Url.Action("DeleteUser", new { userName = user.userName })" class="btn btn-danger">Delete</a>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

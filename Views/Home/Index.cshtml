@@ -1,0 +1,290 @@
+﻿@model IEnumerable<WebAppBaslangc.Models.Biycle>
+@{
+    ViewData["Title"] = "Home Page";
+
+}
+@{
+    Layout = "_AdminLayout";
+}
+
+<style>
+ 
+    .column{
+        float: left;
+        width: 25%;
+        padding: 0 5px;
+      
+    }
+    .card {
+        border: none;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+        overflow: hidden;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+    .card-body {
+        text-align: center;
+        padding: 20px;
+    }
+
+    .card-title {
+        text-align:center;
+        font-size: 1.2rem;
+        font-weight: bold;
+        margin-bottom: 15px;
+    }
+
+    /* Image Hover */
+    .zoom-image {
+        transition: transform 0.3s ease;
+    }
+
+        .zoom-image:hover {
+            transform: scale(1.1);
+        }
+
+    .btn-wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+        margin-top: 10px;
+    }
+
+    .btn-small {
+        padding: 5px 10px;
+        font-size: 0.9rem;
+    }
+
+    .carousel-item img {
+        width: 100%;
+        height: 400px;
+        object-fit: cover;
+    }
+
+    #carouselExample {
+        margin-top: 30px; 
+    }
+
+    #carouselExample {
+        margin-bottom: 30px;
+    }
+
+    .row {
+        padding-top: 30px;
+    }
+
+    /* Sidebar styling */
+    .sidebar {
+        position: fixed;
+        left: -250px;
+        width: 150px;
+        height: 100%;
+        background:transparent;
+        transition: left 0.3s;
+        padding: 15px;
+        color: white;
+        z-index: 1000;
+    }
+
+        .sidebar.active {
+            left: 0;
+        }
+
+        .sidebar ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+            .sidebar ul li {
+                padding: 10px;
+               /*  border-bottom: 1px solid white; */
+
+            }
+
+                .sidebar ul li:hover {
+                    background-color: #444;
+                }
+
+                .sidebar a{
+                    color:white;
+                }
+                .sidebar i{
+            color: white;
+                }
+    .sidebar-toggle-btn {
+        position: fixed;
+        top: 20px;
+        left: 10px;
+        background-color: #333;
+        color: white;
+        border: none;
+        padding: 10px 15px;
+        cursor: pointer;
+        z-index: 1100;
+    }
+    
+
+ 
+</style>
+
+<button class="sidebar-toggle-btn" onclick="toggleSidebar()">☰</button>
+
+<div class="sidebar" id="sidebar">
+  
+    <ul>
+      
+        
+        <li><a href="/Home/Baslangic">About</a></li>
+        <li><a href="/Home/Baslangic/#contact">Contact</a></li>
+       
+        <li>Category
+        <select id="bicycleFilter" class="dropbtn">
+            <option value="all">All</option>
+            @foreach (var brand in Model.Select(c => c.brand).Distinct())
+            {
+                <option value="@brand">@brand</option>
+            }
+        </select>
+        </li>
+       
+    </ul>
+</div>
+
+
+
+<div id="carouselExample" class="carousel slide">
+    <div class="carousel-inner">
+        <div class="carousel-item active">
+            <img src="~/images/a3.jpg" class="d-block w-100" alt="...">
+        </div>
+        <div class="carousel-item">
+            <img src="~/images/1.jpg" class="d-block w-100" alt="...">
+        </div>
+        <div class="carousel-item">
+            <img src="~/images/a2.jpg" class="d-block w-100" alt="...">
+        </div>
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+    </button>
+</div>
+
+
+
+
+<div class="container mt-4">
+    <div class="row">
+        @foreach (var bicycle in Model)
+        {
+            <div class="col-md-4 mb-4 bicycle-item" data-brand="@bicycle.brand">
+                <div class="card h-100">
+                    <h5 class="card-title">@bicycle.brand @bicycle.model</h5>
+                    @if (!string.IsNullOrEmpty(bicycle.ImageFileName))
+                    {
+                        <img src="~/images/@bicycle.ImageFileName" class="card-img-top zoom-image" alt="Bicycle Image" />
+                    }
+                    else
+                    {
+                        <span class="text-center p-3">No Image Available</span>
+                    }
+                    <div class="card-body">
+                        <p class="card-text"><strong>Price:</strong> ₺@bicycle.price</p>
+                        <div class="btn-wrapper">
+                            <button class="btn btn-primary btn-small" onclick="addToCart('@bicycle.ıd', '@bicycle.brand', '@bicycle.model', '@bicycle.price')">
+                                <i class="fas fa-shopping-cart"></i> Add to Cart
+                            </button>
+                            <a href="#" class="btn btn-secondary btn-small">
+                                <i class="fas fa-eye"></i> Details
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+<script>
+    function addToCart(id, brand, model, price) {
+        fetch('/ShoppingCart/AddToCart', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: new URLSearchParams({
+                id: id,
+                brand: brand,
+                model: model,
+                price: price
+            })
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Bicycle added to cart.');
+                    window.location.href = data.redirectUrl;
+                } else {
+                    alert('Failed to add bicycle to cart.');
+                }
+            })
+            .catch(error => console.error('Error:', error));
+    }
+
+    function toggleSidebar() {
+        var sidebar = document.getElementById('sidebar');
+        sidebar.classList.toggle('active');
+    }
+    $(document).ready(function () {
+        $('#bicycleFilter').change(function () {
+            var selectedBrand = $(this).val();
+
+            if (selectedBrand === 'all') {
+             
+                $('.bicycle-item').show();
+            } else {
+               
+                $('.bicycle-item').hide();
+              
+                $('.bicycle-item[data-brand="' + selectedBrand + '"]').show();
+            }
+        });
+    });
+    function showImageDetails(element) {
+        const imageFileName = element.getAttribute('data-image-file-name');
+        const brand = element.getAttribute('data-brand');
+        const model = element.getAttribute('data-model');
+        const year = element.getAttribute('data-year');
+        const price = element.getAttribute('data-price');
+        const color = element.getAttribute('data-color');
+        const id = element.getAttribute('data-id');
+
+        document.getElementById('modalImage').src = '/images/' + imageFileName;
+
+        var details = `<strong>Brand:</strong> ${brand}<br/>
+                               <strong>Model:</strong> ${model}<br/>
+                               <strong>Year:</strong> ${year}<br/>
+                               <strong>Price:</strong> ${price}<br/>
+                               <strong>Color:</strong> ${color}`;
+
+        document.getElementById('bicycleDetails').innerHTML = details;
+
+        currentBicycleId = id;
+        currentBicycleBrand = brand;
+        currentBicycleModel = model;
+        currentBicyclePrice = price;
+
+        var myModal = new bootstrap.Modal(document.getElementById('imageModal'));
+        myModal.show();
+    }
+</script>

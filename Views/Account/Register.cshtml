@@ -1,0 +1,117 @@
+﻿@model WebAppBaslngc.Models.RegisterViewModel
+
+@{
+    ViewData["Title"] = "Register";
+}
+
+ <h1>Register</h1>
+
+
+<hr /> 
+@{
+    Layout = "_AdminLayout";
+}
+<style>
+   
+
+  
+    .content-wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: calc(100vh - 56px); /* Ekran yüksekliğinden navbar yüksekliğini çıkarır */
+        margin-top: 56px; /* Navbar yüksekliği kadar boşluk bırakır */
+    }
+
+    .form-container {
+        background: #ddd;
+        padding: 2rem;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        max-width: 400px;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    h1 {
+        color: #60917b;
+        text-align: center;
+        margin-bottom: 1.5rem;
+    }
+
+    .form-group {
+        margin-bottom: 1rem; 
+    }
+
+    .btn-primary {
+        background-color: #60917b;
+        border-color: #444d42;
+        font-size: 1rem;
+    }
+
+        .btn-primary:hover {
+            background-color: #444d42;
+            border-color: #ddd;
+        }
+
+    .text-danger {
+        color: #dc3545;
+    }
+
+    .text-muted {
+        color: #6c757d;
+    }
+
+    .form-footer {
+        text-align: center;
+        margin-top: 1rem;
+    }
+   
+</style>
+
+<div class="content-wrapper">
+    <div class="form-container">
+        <h1>Register</h1>
+
+        <form asp-action="Register">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            @if (ViewBag.Message != null)
+            {
+                <div class="form-group" style="color:green;">@ViewBag.Message</div>
+            }
+            <div class="form-group">
+                <label asp-for="userName" class="control-label"></label>
+                <input asp-for="userName" class="form-control" />
+                <span asp-validation-for="userName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="eMail" class="control-label"></label>
+                <input asp-for="eMail" class="form-control" />
+                <span asp-validation-for="eMail" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="password" class="control-label"></label>
+                <input asp-for="password" class="form-control" />
+                <span asp-validation-for="password" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ConfirmPassword" class="control-label"></label>
+                <input asp-for="ConfirmPassword" class="form-control" />
+                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input  type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+        <div class="form-footer">
+            Already have an account? <a asp-action="Login">Go To Login</a>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+

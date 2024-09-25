@@ -1,0 +1,183 @@
+﻿@model WebAppBaslangc.Models.ShoppingCardViewModel
+
+<style>
+     
+        .table {
+            width: 100%; 
+            table-layout: fixed; 
+        }
+        .table th, .table td {
+            text-align: center; 
+            overflow: hidden; 
+            white-space: nowrap; 
+            background:transparent;
+        }
+        .d-flex {
+            justify-content: center; 
+        }
+    .rating-box {
+        position: relative;
+        background: white;
+        padding: 25px 50px 35px;
+        border-radius: 25px;
+        box-shadow: 0 5px 10px rgba(0,0,0,0.05);
+    }
+
+        .rating-box header {
+            font-size: 22px;
+            color: #a8a8a8;
+            font-weight: 500;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .rating-box .stars {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+
+    .stars i {
+        color: #e6e6e6;
+        font-size: 35px;
+        cursor: pointer;
+        transition: color 0.2s ease;
+    }
+
+        .stars i.active {
+            color: #ff9c1a;
+        }
+</style>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Brand</th>
+            <th>Model</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>Total</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.cardItems)
+        {
+            <tr id="item-row-@item.ıd">
+                <td>@item.brand</td>
+                <td>@item.model</td>
+                <td>@item.price</td>
+                <td>
+                    <div class="d-flex">
+                        <button type="button" class="btn btn-secondary btn-sm" onclick="updateQuantity('@item.ıd', -1)">-</button>
+                        <input type="number" id="quantity-@item.ıd" value="@item.quantity" class="form-control form-control-sm mx-2" min="1" onchange="updateQuantity('@item.ıd', 0)" />
+                        <button type="button" class="btn btn-secondary btn-sm" onclick="updateQuantity('@item.ıd', 1)">+</button>
+                    </div>
+                </td>
+                <td id="total-price-@item.ıd">@string.Format("{0:C}", item.price * item.quantity)</td>
+                <td>
+                    <a asp-action="RemoveItem" asp-route-id="@item.ıd" class="btn btn-danger">Remove</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<p><strong>Total Quantity:</strong> @Model.totalQuantity</p>
+<p><strong>Total Price:</strong> <span id="total-cart-price">@string.Format("{0:C}", Model.totalPrice)</span></p>
+
+
+@if (Model.cardItems != null && Model.cardItems.Count() > 0)
+{
+    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#checkoutModal">Satın al</button>
+
+
+
+    <div class="modal fade" id="checkoutModal" tabindex="-1" role="dialog" aria-labelledby="checkoutModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="checkoutModalLabel"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Alışverişi tamamlamak için değerlendirme yapın:</p>
+                    <div class="rating-box">
+                        <header>
+                            Bizi değerlendirir misin?
+                        </header>
+                        <div class="stars">
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                        </div>
+                    </div>
+                </div>
+              <div class="modal-footer">
+    <form id="saveChangesForm" method="post" action="@Url.Action("Baslangic", "Home")">
+        <button type="submit" class="btn btn-primary">Save changes</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+    </form>
+</div>
+
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <p>There are no items in your cart.</p>
+}
+<script>
+    const stars = document.querySelectorAll(".stars i");
+    stars.forEach((star, i1) => {
+        star.addEventListener("click", () => {
+            stars.forEach((star, i2) => {
+                i1 >= i2
+                    ? star.classList.add("active")
+                    : star.classList.remove("active");
+            });
+        });
+    });
+
+  
+   function updateQuantity(itemId, change) {
+    const quantityInput = document.getElementById('quantity-' + itemId);
+    let quantity = parseInt(quantityInput.value);
+
+    if (change !== 0) {
+        quantity += change;
+    }
+
+    if (quantity < 1) {
+        quantity = 1;
+    }
+
+    quantityInput.value = quantity;
+
+    const price = parseFloat(document.querySelector(`#item-row-${itemId} td:nth-child(3)`).innerText.replace('₺', '').replace('.', '').replace(',', '.'));
+    const totalPriceElement = document.getElementById('total-price-' + itemId);
+    const totalPrice = price * quantity;
+    totalPriceElement.innerText = formatCurrency(totalPrice);
+
+    updateCartTotal();
+}
+
+function updateCartTotal() {
+    let totalPrice = 0;
+    document.querySelectorAll('tbody tr').forEach(row => {
+        const rowTotal = parseFloat(row.querySelector('td:nth-child(5)').innerText.replace('₺', '').replace('.', '').replace(',', '.'));
+        totalPrice += rowTotal;
+    });
+    document.getElementById('total-cart-price').innerText = formatCurrency(totalPrice);
+}
+
+function formatCurrency(value) {
+    return new Intl.NumberFormat('tr-TR', { style: 'currency', currency: 'TRY' }).format(value);
+}
+
+</script>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />

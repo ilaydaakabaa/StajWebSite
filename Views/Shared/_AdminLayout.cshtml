@@ -1,0 +1,286 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>SuubBike </title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+
+    <style>
+        body, h1, h2, h3, h4, h5, h6 {
+            font-family: "Lato", sans-serif;
+        }
+
+        body, html {
+            height: 100%;
+            color: #555;
+            line-height: 1.8;
+            background: rgb(112,112,112);
+            background: linear-gradient(90deg, rgba(112,112,112,1) 0%, rgba(173,194,176,1) 50%, rgba(112,112,112,1) 100%);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .w3-display-middle {
+            position: relative;
+            z-index: 2;
+            background-color: rgba(0, 0, 0, 0.6);
+            padding: 20px;
+            color: white;
+            font-size: 20px;
+            text-align: center;
+        }
+
+        
+
+        .container {
+            flex: 1; 
+        }
+        .bgimg-1, .bgimg-2, .bgimg-3 {
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+
+        .navbar {
+            background-color: #ddd; 
+            padding: 10px 20px;
+
+        }
+
+
+        .navbar-brand {
+            margin-right: auto; 
+        }
+
+            .navbar-brand img {
+                max-height: 40px;
+            }
+
+        .navbar-nav .nav-link {
+            color: #333;
+            margin-right: 10px;
+        }
+
+            .navbar-nav .nav-link:hover {
+                background-color: #989a9e;
+                color: black;
+                border-radius: 5px;
+            }
+
+        .dropdown-menu {
+            background-color: #333;
+            border: none;
+        }
+
+        .dropdown-item {
+            color: white;
+        }
+
+            .dropdown-item:hover {
+                background-color: #ddd;
+                color: black;
+            }
+
+        .w3-bar {
+            background-color: #333;
+        }
+
+            .w3-bar a {
+                color: white;
+            }
+
+                .w3-bar a:hover {
+                    background-color: #ddd;
+                    color: black;
+                }
+
+        .w3-display-middle {
+            position: relative;
+            z-index: 2;
+            background-color: rgba(0, 0, 0, 0.6);
+            padding: 20px;
+            color: white;
+            font-size: 20px;
+            text-align: center;
+        }
+
+        .w3-bar {
+            background-color: #333;
+        }
+
+            .w3-bar a {
+                color: white;
+            }
+
+                .w3-bar a:hover {
+                    background-color: #ddd;
+                    color: black;
+                }
+
+
+        footer {
+            background-color: #333; 
+            color: #fff; 
+            padding: 10px 0; 
+            margin-top: 20px; 
+        }
+
+        .footer-basic {
+            color: white; 
+        }
+
+            .footer-basic ul {
+                padding: 0;
+                list-style: none;
+                text-align: center;
+                font-size: 18px;
+                line-height: 1.6;
+                margin-bottom: 0;
+            }
+
+            .footer-basic li {
+                padding: 0 10px;
+            }
+
+            .footer-basic ul a {
+                color: inherit;
+                text-decoration: none;
+                opacity: 0.8;
+            }
+
+                .footer-basic ul a:hover {
+                    opacity: 1;
+                }
+
+            .footer-basic .social {
+                text-align: center;
+                padding-bottom: 25px;
+            }
+
+                .footer-basic .social > a {
+                    font-size: 24px;
+                    width: 40px;
+                    height: 40px;
+                    line-height: 40px;
+                    display: inline-block;
+                    text-align: center;
+                    border-radius: 50%;
+                    border: 1px solid #ccc;
+                    margin: 0 8px;
+                    color: inherit;
+                    opacity: 0.75;
+                }
+
+                    .footer-basic .social > a:hover {
+                        opacity: 0.9;
+                    }
+
+            .footer-basic .copyright {
+                margin-top: 15px;
+                text-align: center;
+                font-size: 13px;
+                color: #aaa;
+                margin-bottom: 0;
+            }
+           
+    </style>
+</head>
+<body>
+
+    <a href="javascript:void(0);" class="w3-bar-item w3-button w3-hover-black w3-hide-medium w3-hide-large w3-right" onclick="toggleFunction()" title="Toggle Navigation Menu">
+        <i class="fa fa-bars"></i>
+    </a>
+     Navbar 
+    <nav class="navbar navbar-expand-sm navbar-light">
+        <div class="container">
+            <a class="navbar-brand" href="~/Home/Index">
+                <img src="~/images/pngwing.com-removebg-preview.png" alt="Brand Logo">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav flex-grow-1">
+                    <li class="nav-item">
+                        <a class="nav-link" href="~/Home/Index">Home</a>
+                    </li>
+                   
+
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <li class="nav-item dropdown">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                Admin Paneli
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <a class="dropdown-item" href="/Biycles/Index">Ürün Düzenleme</a>
+                                <a class="dropdown-item" href="/Account/AdminPanel">Admin Panel</a>
+                            </div>
+                        </li>
+                    }
+                </ul>
+                @await Html.PartialAsync("_LoginPartial")
+                 Shopping Cart Link 
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="~/ShoppingCart/ViewCart">
+                            <i class="fas fa-shopping-cart"></i> Sepet
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+     <div id="navDemo" class="w3-bar-block w3-white w3-hide w3-hide-large w3-hide-medium">
+        <a href="#about" class="w3-bar-item w3-button" onclick="toggleFunction()">ABOUT BICYCLES</a>
+        <a href="#contact" class="w3-bar-item w3-button" onclick="toggleFunction()">CONTACT</a>
+    </div> 
+     Main Content 
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+     Footer 
+
+        <footer class="footer-basic">
+            <div class="social">
+                <a href="#"><i class="fab fa-github"></i></a>
+                <a href="#"><i class="fab fa-snapchat"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-facebook"></i></a>
+            </div>
+      
+        <div class="footer-basic">
+            <ul>
+                <li><a href="#about">About</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+            <div class="copyright">
+                SuubBike © 2024
+            </div>
+        </div>
+    </footer>
+  
+    @await RenderSectionAsync("Scripts", required: false)
+     <script>
+               
+                function toggleFunction() {
+                    var x = document.getElementById("navDemo");
+                    if (x.className.indexOf("w3-show") == -1) {
+                        x.className += " w3-show";
+                    } else {
+                        x.className = x.className.replace(" w3-show", "");
+                    }
+        } 
+     </script> 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,263 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Site</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+    <link href="~/Home/img/favicon.ico" rel="icon" />
+     Font Awesome for icons 
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet" />
+
+     Optional: Custom styles 
+    <style>
+        /* Styling for navbar */
+        .navbar {
+            background-color: #333; /* Light cream */
+            border-bottom: 2px solid #09e2cd; /* Blue border for a clean separation */
+            padding: 10px 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar-brand img {
+            max-height: 40px;
+        }
+
+        .nav-link {
+            color: #000;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+            .nav-link:hover {
+                background-color: #09e2cd;
+                color: #fff;
+                border-radius: 5px;
+            }
+
+        .navbar-nav .dropdown-menu {
+            background-color: #f8f9fa;
+            border: none;
+        }
+
+        .navbar-nav .dropdown-item:hover {
+            background-color: #09e2cd;
+            color: white;
+        }
+
+        .card {
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Center content horizontally */
+            text-align: center;
+            margin-bottom: 20px; /* Spacing between cards */
+        }
+
+        .card-img-top {
+            width: 100%; /* Make image fit card width */
+            height: auto; /* Maintain aspect ratio */
+        }
+
+        .zoom-image {
+            transition: transform 0.3s ease;
+            max-width: 100%; /* Ensure image does not exceed card width */
+            height: auto; /* Maintain aspect ratio */
+        }
+
+            .zoom-image:hover {
+                transform: scale(1.1);
+            }
+
+        .card-body {
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Center content horizontally */
+            justify-content: center; /* Center content vertically */
+            text-align: center;
+            padding: 20px;
+            min-height: 150px; /* Ensure a minimum height for consistent card body size */
+        }
+
+        .btn-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .btn-small {
+            padding: 5px 10px;
+            font-size: 0.9rem; /* Smaller button size */
+        }
+
+        html, body {
+            height: 100%; /* Ensure the body takes up the full height */
+            margin: 0; /* Remove default margin */
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            background: rgb(135,144,136);
+            background: linear-gradient(90deg, rgba(135,144,136,1) 0%, rgba(67,157,139,1) 49%, rgba(92,96,95,1) 100%);
+        
+        }
+
+        .container {
+            flex: 1; /* Allow content to grow and push footer down */
+        }
+
+        footer {
+            background-color: #333; /* Dark gray background color */
+            color: #fff; /* White text color */
+            padding: 10px 0; /* Padding for spacing */
+        }
+
+        .footer-basic {
+         
+          
+            color: #4b4c4d; /* Metin rengi */
+        }
+
+            .footer-basic ul {
+                padding: 0;
+                list-style: none;
+                text-align: center;
+                font-size: 18px;
+                line-height: 1.6;
+                margin-bottom: 0;
+            }
+
+            .footer-basic li {
+                padding: 0 10px;
+            }
+
+            .footer-basic ul a {
+                color: inherit;
+                text-decoration: none;
+                opacity: 0.8;
+            }
+
+                .footer-basic ul a:hover {
+                    opacity: 1;
+                }
+
+            .footer-basic .social {
+                text-align: center;
+                padding-bottom: 25px;
+            }
+
+                .footer-basic .social > a {
+                    font-size: 24px;
+                    width: 40px;
+                    height: 40px;
+                    line-height: 40px;
+                    display: inline-block;
+                    text-align: center;
+                    border-radius: 50%;
+                    border: 1px solid #ccc;
+                    margin: 0 8px;
+                    color: inherit;
+                    opacity: 0.75;
+                }
+
+                    .footer-basic .social > a:hover {
+                        opacity: 0.9;
+                    }
+
+            .footer-basic .copyright {
+                margin-top: 15px;
+                text-align: center;
+                font-size: 13px;
+                color: #aaa;
+                margin-bottom: 0;
+            }
+
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container">
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
+                    <img src="~/images/pngwing.com-removebg-preview.png" alt="Brand Logo" style="max-height: 40px;" />
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="About">About</a>
+                        </li>
+
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle text-dark" href="#" id="authDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Admin Paneli
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="authDropdown">
+                                    <a class="dropdown-item" asp-area="" asp-controller="Biycles" asp-action="Index">Ürün Düzenleme</a>
+                                    <a class="dropdown-item" asp-area="" asp-controller="Account" asp-action="AdminPanel">Admin Panel</a>
+                                </div>
+                            </li>
+                        }
+
+                       
+                    </ul>
+                    @await Html.PartialAsync("_LoginPartial")
+                     Shopping Cart Link 
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="ShoppingCart" asp-action="ViewCart">
+                                <i class="fas fa-shopping-cart"></i> Sepet
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+     <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2024 -Ultra Bicycle - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        </div>
+    </footer> 
+    <div class="footer-basic">
+        <footer>
+          
+            <div class="social">
+                <a href="#"><i class="fab fa-github"></i></a>
+                <a href="#"><i class="fab fa-snapchat"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-facebook"></i></a>
+            </div>
+            <ul class="list-inline">
+                <li class="list-inline-item"><a href="#">Home</a></li>
+                <li class="list-inline-item"><a href="#">Services</a></li>
+                <li class="list-inline-item"><a href="#">About</a></li>
+                <li class="list-inline-item"><a href="#">Terms</a></li>
+                <li class="list-inline-item"><a href="#">Privacy Policy</a></li>
+            </ul>
+            <p class="copyright">SuubBike © 2018</p>
+        </footer>
+    </div>
+   
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

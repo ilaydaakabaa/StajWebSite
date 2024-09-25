@@ -1,0 +1,212 @@
+﻿@model IEnumerable<WebAppBaslangc.Models.Biycle>
+
+@{
+    ViewData["Title"] = "Index";
+
+}
+
+<style>
+
+    .table {
+        width: 100%; /* Tabloyu tam genişlikte yapar */
+      
+    }
+
+
+        .table th, .table td {
+            text-align: center; /* Tablo hücrelerini ortalar */
+            overflow: hidden; /* Taşma durumunda gizler */
+            white-space: nowrap; /* Satırların taşmasını önler */
+            background: transparent;
+        }
+
+    .d-flex {
+        justify-content: center; /* Butonları ortalar */
+    }
+    
+
+    .d-flex {
+        justify-content: center; /* Butonları ortalar */
+    }
+    .status-indicator {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+    }
+
+        .status-indicator.deleted {
+            background-color: red;
+        }
+
+        .status-indicator.not-deleted {
+            background-color: transparent;
+            border: 1px solid gray;
+        }
+</style>
+
+<div class="mb-4">
+    <a asp-action="Create" class="btn btn-success">Create New</a>
+</div>
+
+ Modal 
+<div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="imageModalLabel">Bicycle Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <img id="modalImage" src="" alt="Bicycle Image" class="img-fluid" />
+                <div id="bicycleDetails" class="mt-3"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="addToCartButton" onclick="addToCart()">Add to Cart</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Brand</th>
+            <th>Model</th>
+            <th>Year</th>
+            <th>Type</th>
+            <th>Price</th>
+            <th>Color</th>
+            <th>Image</th>
+            <th>Created Date</th>
+            <th>Updated Date</th>
+            <th>Deleted Date</th>
+            <th>Is Deleted</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var bicycle in Model)
+        {
+            <tr>
+                <td>@bicycle.brand</td>
+                <td>@bicycle.model</td>
+                <td>@bicycle.year</td>
+                <td>@bicycle.type</td>
+                <td>@bicycle.price</td>
+                <td>@bicycle.color</td>
+                <td>
+                    @if (!string.IsNullOrEmpty(bicycle.ImageFileName))
+                    {
+                        <a href="#"
+                           data-image-file-name="@bicycle.ImageFileName"
+                           data-brand="@bicycle.brand"
+                           data-model="@bicycle.model"
+                           data-year="@bicycle.year"
+                           data-price="@bicycle.price"
+                           data-color="@bicycle.color"
+                           data-id="@bicycle.ıd"
+                           onclick="showImageDetails(this); return false;">
+                            <img src="~/images/@bicycle.ImageFileName" style="width:100px;height:auto;" />
+                        </a>
+                    }
+                    else
+                    {
+                        <span>No Image</span>
+                    }
+                </td>
+                <td>@bicycle.CreatedDate.ToString("yyyy-MM-dd")</td>
+                <td>
+                    @if (bicycle.UpdatedDate.HasValue)
+                    {
+                        @bicycle.UpdatedDate.Value.ToString("yyyy-MM-dd")
+                    }
+                    else
+                    {
+                        <span>-</span>
+                    }
+                </td>
+                <td>
+                    @if (bicycle.DeletedDate.HasValue)
+                    {
+                        @bicycle.DeletedDate.Value.ToString("yyyy-MM-dd")
+                    }
+                    else
+                    {
+                        <span>-</span>
+                    }
+                </td>
+                <td>
+                    <span class="status-indicator @(bicycle.IsDeleted ? "deleted" : "not-deleted")"></span>
+                </td>
+                <td>
+                    <a href="@Url.Action("Edit", new { id = bicycle.ıd })" class="btn btn-warning">Edit</a>
+                    @if (!bicycle.IsDeleted)
+                    {
+                        <a href="@Url.Action("Delete", new { id = bicycle.ıd })" class="btn btn-danger">Delete</a>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<script>
+    let currentBicycleId = 0;
+    let currentBicycleBrand = '';
+    let currentBicycleModel = '';
+    let currentBicyclePrice = 0;
+
+    function showImageDetails(element) {
+        const imageFileName = element.getAttribute('data-image-file-name');
+        const brand = element.getAttribute('data-brand');
+        const model = element.getAttribute('data-model');
+        const year = element.getAttribute('data-year');
+        const price = element.getAttribute('data-price');
+        const color = element.getAttribute('data-color');
+        const id = element.getAttribute('data-id');
+
+        document.getElementById('modalImage').src = '/images/' + imageFileName;
+
+        var details = `<strong>Brand:</strong> ${brand}<br/>
+                           <strong>Model:</strong> ${model}<br/>
+                           <strong>Year:</strong> ${year}<br/>
+                           <strong>Price:</strong> ${price}<br/>
+                           <strong>Color:</strong> ${color}`;
+
+        document.getElementById('bicycleDetails').innerHTML = details;
+
+        currentBicycleId = id;
+        currentBicycleBrand = brand;
+        currentBicycleModel = model;
+        currentBicyclePrice = price;
+
+        var myModal = new bootstrap.Modal(document.getElementById('imageModal'));
+        myModal.show();
+    }
+
+    function addToCart() {
+        fetch('/ShoppingCart/AddToCart', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: new URLSearchParams({
+                id: currentBicycleId,
+                brand: currentBicycleBrand,
+                model: currentBicycleModel,
+                price: currentBicyclePrice
+            })
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Bicycle with ID ' + currentBicycleId + ' added to cart.');
+                    window.location.href = data.redirectUrl;
+                } else {
+                    alert('Failed to add bicycle to cart.');
+                }
+            });
+    }
+</script>

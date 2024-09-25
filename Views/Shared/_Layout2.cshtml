@@ -1,0 +1,231 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>SuubBike </title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <style>
+        body, h1, h2, h3, h4, h5, h6 {
+            font-family: "Lato", sans-serif;
+        }
+
+        body, html {
+            height: 100%;
+            color: #555;
+            line-height: 1.8;
+            background-color: #f0f0f0;
+            margin: 0;
+
+        }
+
+        .w3-display-middle {
+            position: relative;
+            z-index: 2;
+            background-color: rgba(0, 0, 0, 0.6);
+            padding: 20px;
+            color: white;
+            font-size: 20px;
+            text-align: center;
+        }
+
+        img {
+            opacity: 0.7;
+            z-index: 1;
+        }
+
+        .bgimg-1 {
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            height: 100vh;
+        }
+
+        .white-background {
+            background-color: #ffffff;
+            padding: 50px 0;
+        }
+
+        .w3-bar {
+            background-color: #333;
+        }
+
+            .w3-bar a {
+                color: white;
+            }
+
+                .w3-bar a:hover {
+                    background-color: #ddd;
+                    color: black;
+                }
+
+        footer {
+            background-color: #333; /* Dark gray background color */
+            color: #fff; /* White text color */
+            padding: 10px 0; /* Padding for spacing */
+            margin-top: 20px; /* Space from the content above */
+        }
+
+        .footer-basic {
+            color: #4b4c4d; /* Text color */
+        }
+
+            .footer-basic ul {
+                padding: 0;
+                list-style: none;
+                text-align: center;
+                font-size: 18px;
+                line-height: 1.6;
+                margin-bottom: 0;
+            }
+
+            .footer-basic li {
+                padding: 0 10px;
+            }
+
+            .footer-basic ul a {
+                color: inherit;
+                text-decoration: none;
+                opacity: 0.8;
+            }
+
+                .footer-basic ul a:hover {
+                    opacity: 1;
+                }
+
+            .footer-basic .social {
+                text-align: center;
+                padding-bottom: 25px;
+            }
+
+                .footer-basic .social > a {
+                    font-size: 24px;
+                    width: 40px;
+                    height: 40px;
+                    line-height: 40px;
+                    display: inline-block;
+                    text-align: center;
+                    border-radius: 50%;
+                    border: 1px solid #ccc;
+                    margin: 0 8px;
+                    color: inherit;
+                    opacity: 0.75;
+                }
+
+                    .footer-basic .social > a:hover {
+                        opacity: 0.9;
+                    }
+
+            .footer-basic .copyright {
+                margin-top: 15px;
+                text-align: center;
+                font-size: 13px;
+                color: #aaa;
+                margin-bottom: 0;
+            }
+    </style>
+</head>
+<body>
+
+ 
+            <a href="javascript:void(0);"  class="w3-bar-item w3-button w3-hover-black w3-hide-medium w3-hide-large w3-right" onclick="toggleFunction()" title="Toggle Navigation Menu">
+                <i class="fa fa-bars"></i>
+            </a>
+
+
+
+
+
+
+
+    <!-- Home Section -->
+    <div class="bgimg-1 w3-display-container" style="background-image:url('/images/bg1.jpg'); height:100vh;" id="home">
+        <div class="w3-display-middle">
+            <span class="w3-center w3-padding-large w3-black w3-xlarge w3-wide w3-animate-opacity">LOVE <span class="w3-hide-small">FOR BICYCLES</span></span>
+        </div>
+        <div class="w3-display-middle">
+            <a asp-controller="Home" asp-action="Index" class="w3-center w3-padding-large w3-black w3-xlarge w3-wide w3-animate-opacity">
+                <span class="w3-center w3-padding-large w3-black w3-xlarge w3-wide w3-animate-opacity">START <span class="w3-hide-small">SHOPPING</span></span>
+            </a>
+        </div>
+
+    </div>
+
+
+    <!-- About Section -->
+    <div class="w3-content w3-container white-background" id="about">
+        <h3 class="w3-center">ABOUT BICYCLES</h3>
+        <p class="w3-center"><em>Exploring the joy of cycling</em></p>
+        <p>Bicycles are more than just a mode of transportation; they represent freedom, adventure, and sustainability. Whether you're riding through the city streets, cruising down country roads, or exploring off-road trails, cycling offers a unique connection to the environment. It's not just about getting from point A to point B—it's about the journey, the fresh air, the sense of accomplishment, and the joy of motion.</p>
+        <p>Over the years, bicycles have evolved, yet the core principles remain the same: two wheels, pedals, and a whole lot of fun. From road bikes to mountain bikes, each type of bicycle is designed with specific purposes in mind, offering a variety of experiences to cyclists of all levels. Join us as we dive into the world of bicycles, and discover why cycling is one of the most beloved activities around the globe.</p>
+    </div>
+
+    <!-- Contact Section -->
+    <div class="w3-content w3-container white-background" id="contact">
+        <h3 class="w3-center">CONTACT</h3>
+        <div class="w3-row w3-padding-32 w3-section">
+            <div class="w3-col m8 w3-panel">
+                <div class="w3-large w3-margin-bottom">
+                    <i class="fa fa-map-marker fa-fw w3-hover-text-black w3-xlarge w3-margin-right"></i> City, Country<br>
+                    <i class="fa fa-phone fa-fw w3-hover-text-black w3-xlarge w3-margin-right"></i> Phone: +00 123456789<br>
+                    <i class="fa fa-envelope fa-fw w3-hover-text-black w3-xlarge w3-margin-right"></i> Email: info@bicycles.com<br>
+                </div>
+                <form action="/action_page.php" target="_blank">
+                    <div class="w3-row-padding" style="margin:0 -16px 8px -16px">
+                        <div class="w3-half">
+                            <input class="w3-input w3-border" type="text" placeholder="Name" required name="Name">
+                        </div>
+                        <div class="w3-half">
+                            <input class="w3-input w3-border" type="text" placeholder="Email" required name="Email">
+                        </div>
+                    </div>
+                    <input class="w3-input w3-border" type="text" placeholder="Message" required name="Message">
+                    <button class="w3-button w3-black w3-right w3-section" type="submit">
+                        <i class="fa fa-paper-plane"></i> SEND MESSAGE
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+    @RenderBody()
+    <!-- Footer -->
+    <footer class="w3-center w3-black w3-padding-64 w3-opacity w3-hover-opacity-off">
+        <a href="#home" class="w3-button w3-light-grey"><i class="fa fa-arrow-up w3-margin-right"></i> To the top</a>
+        <div class="w3-xlarge w3-section">
+            <i class="fa fa-facebook-official w3-hover-opacity"></i>
+            <i class="fa fa-instagram w3-hover-opacity"></i>
+            <i class="fa fa-snapchat w3-hover-opacity"></i>
+            <i class="fa fa-pinterest-p w3-hover-opacity"></i>
+            <i class="fa fa-twitter w3-hover-opacity"></i>
+            <i class="fa fa-linkedin w3-hover-opacity"></i>
+        </div>
+        <div class="footer-basic">
+            <ul>
+                <li><a href="#about">About</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+            <div class="copyright">
+                SuubBike © 2024
+            </div>
+        </div>
+    </footer>
+
+
+    <script>
+        // Toggle the menu on small screens
+        function toggleFunction() {
+            var x = document.getElementById("navDemo");
+            if (x.className.indexOf("w3-show") == -1) {
+                x.className += " w3-show";
+            } else {
+                x.className = x.className.replace(" w3-show", "");
+            }
+        }
+    </script>
+
+</body>
+</html>
